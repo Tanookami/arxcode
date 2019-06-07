@@ -1,7 +1,10 @@
 from django.http import JsonResponse
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from .models import Shardhaven, ShardhavenLayout, ShardhavenLayoutSquare, \
     ShardhavenLayoutExit, ShardhavenObstacle, ShardhavenPuzzle, Monster
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAdminUser
 
 
 JSON_ERROR_AUTHORIZATION = -1
@@ -19,19 +22,28 @@ class JsonErrorResponse(JsonResponse):
         super(JsonErrorResponse, self).__init__(result, status=status)
 
 
-def get_haven_list(request):
-    if not request.user.is_staff:
-        return JsonErrorResponse("Not authorized!", code=JSON_ERROR_AUTHORIZATION)
+class ShardhavenListView(ListAPIView):
+    permission_classes = (IsAdminUser,)
 
-    result = []
-    for haven in Shardhaven.objects.all():
-        haven_data = {
-            'id': haven.id,
-            'name': str(haven.name)
-        }
-        result.append(haven_data)
+    class Meta:
+        model = Shardhaven
+        fields = ['id', 'name']
 
-    return JsonResponse({'havens': result})
+
+# KAMI: This is not used now that there is a class! Think about getting rid of it.
+# def get_haven_list(request):
+#     if not request.user.is_staff:
+#         return JsonErrorResponse("Not authorized!", code=JSON_ERROR_AUTHORIZATION)
+#
+#     result = []
+#     for haven in Shardhaven.objects.all():
+#         haven_data = {
+#             'id': haven.id,
+#             'name': str(haven.name)
+#         }
+#         result.append(haven_data)
+#
+#     return JsonResponse({'havens': result})
 
 
 def get_obstacle_list(request):
