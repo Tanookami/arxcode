@@ -5,6 +5,7 @@ django-classy-tags==0.8.0
 django-crispy-forms==1.7.0
 django-sekizai==0.10.0
 django-test-without-migrations==0.6
+djangorestframework==3.9.4
 dnspython==1.15.0
 funcsigs==1.0.2
 future==0.15.2
