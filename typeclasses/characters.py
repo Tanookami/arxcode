@@ -19,7 +19,7 @@ from evennia.utils.utils import lazy_property, variable_from_module
 import time
 from world.stats_and_skills import do_dice_check
 from world.magic.mixins import MagicMixins
-from world.traits.traitshandler import Traitshandler
+from world.traits.statshandler import StatsHandler
 
 
 class Character(UseEquipmentMixins, NameMixins, MsgMixins, ObjectMixins, MagicMixins, DefaultCharacter):
@@ -77,7 +77,7 @@ class Character(UseEquipmentMixins, NameMixins, MsgMixins, ObjectMixins, MagicMi
 
     @lazy_property
     def traits(self):
-        return Traitshandler(self)
+        return StatsHandler(self)
 
     def at_after_move(self, source_location, **kwargs):
         """

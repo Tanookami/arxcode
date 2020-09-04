@@ -12,14 +12,14 @@ from world.stats_and_skills import (VALID_SKILLS, VALID_STATS, VALID_ABILITIES,
                                     PHYSICAL_STATS)
 
 
-class Trait:
+class StatsTrait:
     """Wrapper for traits, will later be replaced by a model"""
     def __init__(self, name, value):
         self.name = name
         self.value = value
 
 
-class Traitshandler:
+class StatsHandler:
     """
     Handler that's instantiated with a character, which will then store the instance
     as a cached property on the character.
@@ -51,17 +51,17 @@ class Traitshandler:
             self.character.db.abilities.pop(name)
         self.character.db.abilities[name] = value
 
-    def get_highest_skill(self, namelist: List[str]) -> Trait:
+    def get_highest_skill(self, namelist: List[str]) -> StatsTrait:
         """
         Gets the highest trait for list of skill names. If no matches, a ValueError is raised and we choose
         one at random.
         """
         try:
             # get the highest trait from the list of skill names
-            return max([Trait(name, self.get_skill_value(name)) for name in namelist], key=lambda x: x.value)
+            return max([StatsTrait(name, self.get_skill_value(name)) for name in namelist], key=lambda x: x.value)
         except ValueError:
             # no match, get one at random
-            return Trait(random.choice(namelist), 0)
+            return StatsTrait(random.choice(namelist), 0)
 
     # physical stats
     @property
@@ -188,8 +188,8 @@ class Traitshandler:
         self.set_skill_value(field, current + value)
         self.character.db.trainer = None
         if field in CRAFTING_SKILLS:
-            abilitylist = _parent_abilities_[field]
-            for ability in abilitylist:
+            ability_list = _parent_abilities_[field]
+            for ability in ability_list:
                 if ability not in self.abilities:
                     self.set_ability_value(ability, 1)
 
