@@ -32,22 +32,55 @@ class DescriptionsHandler:
     #Characters
 
     #Rooms
-    #spring_desc
-    #summer_desc
-    #autumn_desc
-    #winter_desc
-    #general_desc - used as a fallback if a seasonal one is not set
-    #raw_desc - set dynamically. Can contain raw timeslot codes
-    #desc - set dynamically at first look. Parsed for timeslot codes
-    #last_season - will be filled later
-    #last_timeslot - will be filled later
+    @property
+    def spring_desc(self):
+        return self.item.db.spring_desc
+
+    @property
+    def summer_desc(self):
+        return self.item.db.summer_desc
+
+    @property
+    def autumn_desc(self):
+        return self.item.db.autumn_desc
+
+    @property
+    def winter_desc(self):
+        return self.item.db.winter_desc
+
+    @property
+    def general_desc(self):
+        "used as a fallback if a seasonal one is not set"
+        return self.item.db.general_desc
+
+    @property
+    def raw_desc(self):
+        "set dynamically. Can contain raw timeslot codes"
+        return self.item.db.raw_desc
+
+    @property
+    def desc(self):
+        "set dynamically at first look. Parsed for timeslot codes"
+        return self.item.db.desc
+
+    @property
+    def last_season(self):
+        "will be filled later"
+        return self.item.db.last_season
+
+    @property
+    def last_timeslot(self):
+        "will be filled later"
+        return self.item.db.last_timeslot
 
     @property
     def details(self):
         "detail storage"
+        if not self.item.db.details:
+            self.item.db.details = {}
         return self.item.db.details
 
-    #setter
+    #setter?
 
     @property
     def room_mood(self):
@@ -56,3 +89,5 @@ class DescriptionsHandler:
     @room_mood.setter
     def room_mood(self, value):
         pass
+
+
